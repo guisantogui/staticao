@@ -1,0 +1,16 @@
+{
+  "leagues": [
+    {
+      "name": "UK Premier League"
+    },
+    {
+      "name": "Bundesliga I"
+    },
+    {
+      "name": "La Liga"
+    },
+    {
+      "name": "Brasileirão Série A"
+    }
+  ]
+}
