@@ -19,5 +19,9 @@ interface LeagueDao {
     @Query("SELECT * FROM League ORDER BY leagueName ASC")
     fun getAll(): Flow<List<League>>
 
+    @Query("SELECT * FROM League WHERE leagueName like :searchTerm ORDER BY leagueName ASC")
+    fun getFiltered(searchTerm: String): Flow<List<League>>
+
+
 
 }

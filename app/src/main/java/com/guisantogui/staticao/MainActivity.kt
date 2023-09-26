@@ -54,10 +54,26 @@ class MainActivity : ComponentActivity() {
         setContent {
             StaticaoTheme {
 
-                val state = leagueViewModel.leagues.collectAsState()
+                val state = leagueViewModel.state.collectAsState()
+
 
                 Scaffold(
-                    topBar = { SearchBar() },
+                    topBar = {
+                        OutlinedTextField(
+                            value = state.value.searchTerm,
+                            onValueChange = {
+                                leagueViewModel.onEvent(LeagueEvent.SetSearchTerm(it))
+                            },
+                            label = { Text("Pesquisar") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 12.dp, bottom = 12.dp, start = 6.dp, end = 6.dp),
+
+                            shape = MaterialTheme.shapes.small,
+
+
+                            )
+                    },
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     floatingActionButton = {
                         IconButton(onClick = {
@@ -80,7 +96,7 @@ class MainActivity : ComponentActivity() {
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             content = {
 
-                                items(state.value) {
+                                items(state.value.leagues) {
                                     LeagueItem(it.leagueName, R.drawable.premier_league_uk)
                                 }
                             })
