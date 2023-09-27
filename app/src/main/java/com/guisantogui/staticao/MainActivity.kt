@@ -1,10 +1,12 @@
 package com.guisantogui.staticao
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -96,7 +98,12 @@ class MainActivity : ComponentActivity() {
                             content = {
 
                                 items(state.value.leagues) {
-                                    LeagueItem(it.leagueName, R.drawable.premier_league_uk)
+                                    LeagueItem(it.leagueName,
+                                        R.drawable.premier_league_uk,
+                                        {
+                                            leagueViewModel.onEvent(LeagueEvent.DeleteLeague(it))
+                                        }
+                                    )
                                 }
                             })
                     }
@@ -126,7 +133,9 @@ fun LeagueGrid(modifier: Modifier = Modifier) {
         content = {
 
             items(list) {
-                LeagueItem("", it)
+                LeagueItem("", it) {
+                    Log.e("TAG", "A")
+                }
             }
         })
 }
@@ -135,7 +144,8 @@ fun LeagueGrid(modifier: Modifier = Modifier) {
 @Composable
 fun LeagueItem(
     league: String,
-    logo: Int
+    logo: Int,
+    deleteEvent: () -> Unit
 ) {
 
     Surface(
@@ -154,8 +164,9 @@ fun LeagueItem(
                     .size(120.dp)
                     .padding(8.dp)
                     .background(MaterialTheme.colorScheme.surface)
-
-
+                    .clickable {
+                        deleteEvent()
+                    }
             )
         }
 
@@ -164,11 +175,12 @@ fun LeagueItem(
 
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun LeagueItemPreview() {
-    LeagueItem("Premier League", R.drawable.premier_league_uk)
-}
+    LeagueItem("Premier League", R.drawable.premier_league_uk, null)
+}*/
 
 
 @Preview(showBackground = true)
