@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
 
                 val state = leagueViewModel.state.collectAsState()
 
-
                 Scaffold(
                     topBar = {
                         OutlinedTextField(

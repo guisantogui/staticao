@@ -23,16 +23,17 @@ class LeagueViewModel @Inject constructor (): ViewModel() {
 
     private val _leagues = _searchTerm.flatMapLatest {term ->
         if(term != ""){
-            leagueDao.getFiltered(_state.value.searchTerm)
+            leagueDao.getFiltered(_searchTerm.value)
         }
         else{
             leagueDao.getAll()
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    val state = combine(_state, _leagues){ state,  leagues ->
+    val state = combine(_state, _searchTerm, _leagues){ state, searchTerm, leagues ->
         state.copy(
-            leagues = leagues
+            leagues = leagues,
+            searchTerm = searchTerm
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LeagueListState())
 
@@ -51,9 +52,6 @@ class LeagueViewModel @Inject constructor (): ViewModel() {
             }
             is LeagueEvent.SetSearchTerm -> {
                 _searchTerm.value = event.searchTerm
-                _state.update {
-                    it.copy(leagues = _leagues.value, searchTerm = event.searchTerm)
-                }
             }
         }
     }
